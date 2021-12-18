@@ -2,10 +2,12 @@
 using AventStack.ExtentReports.Gherkin.Model;
 using AventStack.ExtentReports.Reporter;
 using BoDi;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using TechTalk.SpecFlow;
 
+[assembly:Parallelizable(ParallelScope.Fixtures)]
 namespace SpecflowNunit.StepDefinitions
 {
     [Binding]
