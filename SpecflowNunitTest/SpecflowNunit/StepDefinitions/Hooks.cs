@@ -4,8 +4,6 @@ using AventStack.ExtentReports.Reporter;
 using BoDi;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System.IO;
-using System.Reflection;
 using TechTalk.SpecFlow;
 
 namespace SpecflowNunit.StepDefinitions
@@ -69,26 +67,16 @@ namespace SpecflowNunit.StepDefinitions
 
             if (scenarioContext.TestError != null)
             {
+                var mediaEntity = _driver.CaptureScreenshotAndReturnModel(scenarioContext.ScenarioInfo.Title.Trim());
+
                 if (stepType == "Given")
-                {
-                    _scnarioName.CreateNode<Given>(scenarioContext.StepContext.StepInfo.Text).Fail(scenarioContext.TestError.Message);
-                    _scnarioName.AddScreenCaptureFromBase64String(_driver.ScreenCaptureAsBase64String());
-                }
+                    _scnarioName.CreateNode<Given>(scenarioContext.StepContext.StepInfo.Text).Fail(scenarioContext.TestError.Message, mediaEntity);
                 else if (stepType == "When")
-                {
-                    _scnarioName.CreateNode<When>(scenarioContext.StepContext.StepInfo.Text).Fail(scenarioContext.TestError.Message);
-                    _scnarioName.AddScreenCaptureFromBase64String(_driver.ScreenCaptureAsBase64String());
-                }
+                    _scnarioName.CreateNode<When>(scenarioContext.StepContext.StepInfo.Text).Fail(scenarioContext.TestError.Message, mediaEntity);
                 else if (stepType == "Then")
-                {
-                    _scnarioName.CreateNode<Then>(scenarioContext.StepContext.StepInfo.Text).Fail(scenarioContext.TestError.Message);
-                    _scnarioName.AddScreenCaptureFromBase64String(_driver.ScreenCaptureAsBase64String());
-                }
+                    _scnarioName.CreateNode<Then>(scenarioContext.StepContext.StepInfo.Text).Fail(scenarioContext.TestError.Message, mediaEntity);
                 else if (stepType == "And")
-                {
-                    _scnarioName.CreateNode<And>(scenarioContext.StepContext.StepInfo.Text).Fail(scenarioContext.TestError.Message);
-                    _scnarioName.AddScreenCaptureFromBase64String(_driver.ScreenCaptureAsBase64String());
-                }
+                    _scnarioName.CreateNode<And>(scenarioContext.StepContext.StepInfo.Text).Fail(scenarioContext.TestError.Message, mediaEntity);
             }
         }
 
