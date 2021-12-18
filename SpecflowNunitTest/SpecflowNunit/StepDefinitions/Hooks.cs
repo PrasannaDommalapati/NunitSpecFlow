@@ -54,9 +54,7 @@ namespace SpecflowNunit.StepDefinitions
         public void InsertReportingSteps(ScenarioContext scenarioContext)
         {
             var stepType = scenarioContext.StepContext.StepInfo.StepDefinitionType.ToString();
-            PropertyInfo pInfo = typeof(ScenarioContext).GetProperty("ScenarioExecutionStatus", BindingFlags.Instance | BindingFlags.Public);
-            MethodInfo getter = pInfo.GetGetMethod(nonPublic: true);
-            object TestResult = getter.Invoke(_scenarioContext, null);
+
             if (scenarioContext.TestError == null)
             {
                 if (stepType == "Given")
