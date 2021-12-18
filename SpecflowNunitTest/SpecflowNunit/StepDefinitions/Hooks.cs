@@ -5,6 +5,8 @@ using BoDi;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using System;
+using System.IO;
 using TechTalk.SpecFlow;
 
 [assembly:Parallelizable(ParallelScope.Fixtures)]
@@ -31,7 +33,7 @@ namespace SpecflowNunit.StepDefinitions
         [BeforeTestRun]
         public static void InitializeReport()
         {
-            var htmlReporter = new ExtentHtmlReporter(@"C:\Users\Prasanna Dommalapati\Desktop\Reports\ExtentReports.html");
+            var htmlReporter = new ExtentHtmlReporter(@$"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent}\Reports\ExtentReports.html");
             extent = new ExtentReports();
             extent.AttachReporter(htmlReporter);
         }
