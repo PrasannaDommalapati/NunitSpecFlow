@@ -51,6 +51,7 @@ namespace SpecflowNunit.StepDefinitions
             _driver = new ChromeDriver();
             _objectContainer.RegisterInstanceAs<IWebDriver>(_driver);
             _scnarioName = _featureName.CreateNode<Scenario>(_scenarioContext.ScenarioInfo.Title);
+            _scnarioName.AssignCategory(_scenarioContext.ScenarioInfo.Tags);
         }
 
         [AfterTestRun]
@@ -79,7 +80,7 @@ namespace SpecflowNunit.StepDefinitions
             if (scenarioContext.TestError != null)
             {
                 var mediaEntity = _driver.CaptureScreenshotAndReturnModel(scenarioContext.ScenarioInfo.Title.Trim());
-                var errorMessage = $"Message: '{scenarioContext.TestError.Message}', {Environment.NewLine} StackTrace: '{scenarioContext.TestError.StackTrace}'";
+                var errorMessage = $"Message: '{scenarioContext.TestError.Message}'>-----> StackTrace: '{scenarioContext.TestError.StackTrace}'";
 
                 if (stepType == "Given")
                     _scnarioName.CreateNode<Given>(scenarioContext.StepContext.StepInfo.Text).Fail(errorMessage, mediaEntity);
