@@ -1,6 +1,7 @@
 ﻿using AventStack.ExtentReports;
 using AventStack.ExtentReports.Gherkin.Model;
 using AventStack.ExtentReports.Reporter;
+using AventStack.ExtentReports.Reporter.Configuration;
 using BoDi;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -8,8 +9,8 @@ using OpenQA.Selenium.Chrome;
 using System;
 using System.IO;
 using TechTalk.SpecFlow;
+using ExtentReporter = AventStack.ExtentReports.ExtentReports;
 
-[assembly:Parallelizable(ParallelScope.Fixtures)]
 namespace SpecflowNunit.StepDefinitions
 {
     [Binding]
@@ -17,7 +18,7 @@ namespace SpecflowNunit.StepDefinitions
     {
         private static ExtentTest _featureName;
         private static ExtentTest _scnarioName;
-        private static ExtentReports extent;
+        private static ExtentReporter extent;
         private IObjectContainer _objectContainer { get; set; }
         private IWebDriver _driver { get; set; }
         private readonly ScenarioContext _scenarioContext;
@@ -33,8 +34,14 @@ namespace SpecflowNunit.StepDefinitions
         [BeforeTestRun]
         public static void InitializeReport()
         {
-            var htmlReporter = new ExtentHtmlReporter(@$"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent}\Reports\ExtentReports.html");
-            extent = new ExtentReports();
+            string testExecutionTime = DateTime.Now.ToString("HH-mm-dd-MM-yyyy");
+            var htmlReporter = new ExtentV3HtmlReporter(@$"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent}\Reports\extent_{testExecutionTime}.html");
+            htmlReporter.Config.Theme = Theme.Dark;
+            extent = new ExtentReporter();
+            extent.AddSystemInfo("Application Under Test", "Google Demo");
+            extent.AddSystemInfo("Environment", "QA");
+            extent.AddSystemInfo("Machine", Environment.MachineName);
+            extent.AddSystemInfo("OS", Environment.OSVersion.VersionString);
             extent.AttachReporter(htmlReporter);
         }
 
@@ -72,15 +79,16 @@ namespace SpecflowNunit.StepDefinitions
             if (scenarioContext.TestError != null)
             {
                 var mediaEntity = _driver.CaptureScreenshotAndReturnModel(scenarioContext.ScenarioInfo.Title.Trim());
+                var errorMessage = $"Message: '{scenarioContext.TestError.Message}', {Environment.NewLine} StackTrace: '{scenarioContext.TestError.StackTrace}'";
 
                 if (stepType == "Given")
-                    _scnarioName.CreateNode<Given>(scenarioContext.StepContext.StepInfo.Text).Fail(scenarioContext.TestError.Message, mediaEntity);
+                    _scnarioName.CreateNode<Given>(scenarioContext.StepContext.StepInfo.Text).Fail(errorMessage, mediaEntity);
                 else if (stepType == "When")
-                    _scnarioName.CreateNode<When>(scenarioContext.StepContext.StepInfo.Text).Fail(scenarioContext.TestError.Message, mediaEntity);
+                    _scnarioName.CreateNode<When>(scenarioContext.StepContext.StepInfo.Text).Fail(errorMessage, mediaEntity);
                 else if (stepType == "Then")
-                    _scnarioName.CreateNode<Then>(scenarioContext.StepContext.StepInfo.Text).Fail(scenarioContext.TestError.Message, mediaEntity);
+                    _scnarioName.CreateNode<Then>(scenarioContext.StepContext.StepInfo.Text).Fail(errorMessage, mediaEntity);
                 else if (stepType == "And")
-                    _scnarioName.CreateNode<And>(scenarioContext.StepContext.StepInfo.Text).Fail(scenarioContext.TestError.Message, mediaEntity);
+                    _scnarioName.CreateNode<And>(scenarioContext.StepContext.StepInfo.Text).Fail(errorMessage, mediaEntity);
             }
         }
 
