@@ -16,10 +16,14 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
-    - name: Restore dependencies
-      run: dotnet restore SpecflowNunitTest\SpecflowNunitTest.csproj
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+        dotnet-version: 6.0.x
+
+    - name: Build with dotnet
+      continue-on-error: false
+      run: dotnet build --configuration Release
+      working-directory: SpecflowNunitTest/
+
+    - name: Test with dotnet
+      continue-on-error: false
+      run: dotnet test --configuration Release
+      working-directory: SpecflowNunitTest/
