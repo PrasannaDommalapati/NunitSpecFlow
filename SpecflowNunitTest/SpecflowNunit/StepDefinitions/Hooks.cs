@@ -49,8 +49,7 @@ namespace SpecflowNunit.StepDefinitions
         public void BeforeScenario()
         {
             ChromeOptions options = new ChromeOptions();
-            options.addArguments("--no-sandbox");
-            options.addArguments("--disable-dev-shm-usage");
+            options.AddArguments("--no-sandbox", "--disable-dev-shm-usage");
 
             _driver = new ChromeDriver(options);
             _objectContainer.RegisterInstanceAs<IWebDriver>(_driver);
