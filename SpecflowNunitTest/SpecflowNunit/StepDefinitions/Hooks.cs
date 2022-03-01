@@ -9,6 +9,8 @@ using OpenQA.Selenium.Chrome;
 using System;
 using System.IO;
 using TechTalk.SpecFlow;
+using WebDriverManager;
+using WebDriverManager.DriverConfigs.Impl;
 using ExtentReporter = AventStack.ExtentReports.ExtentReports;
 
 namespace SpecflowNunit.StepDefinitions
