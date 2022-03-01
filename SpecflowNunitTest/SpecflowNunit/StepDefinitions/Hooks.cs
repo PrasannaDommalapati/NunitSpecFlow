@@ -48,10 +48,15 @@ namespace SpecflowNunit.StepDefinitions
         [BeforeScenario]
         public void BeforeScenario()
         {
-            ChromeOptions options = new ChromeOptions();
-            options.AddArguments("--no-sandbox", "--disable-dev-shm-usage");
+            ChromeOptions option = new ChromeOptions();
+            option.AddArguments("start-maximized");
+            option.AddArguments("--disable-gpu");
+            option.AddArguments("--headless");
 
-            _driver = new ChromeDriver(options);
+            new DriverManager().SetUpDriver(new ChromeConfig());
+            Console.WriteLine("Setup");
+
+            _driver = new ChromeDriver(option);
             _objectContainer.RegisterInstanceAs<IWebDriver>(_driver);
             _scnarioName = _featureName.CreateNode<Scenario>(_scenarioContext.ScenarioInfo.Title);
             _scnarioName.AssignCategory(_scenarioContext.ScenarioInfo.Tags);
