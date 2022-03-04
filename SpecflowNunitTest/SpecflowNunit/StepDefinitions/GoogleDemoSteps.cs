@@ -26,8 +26,8 @@ namespace SpecflowNunit.StepDefinitions
         [When(@"I enter a keyword ""(.*)""")]
         public void WhenIEnterAKeyword(string keyword)
         {
-            _driver.SwitchTo().ActiveElement();
-            _driver.FindElement(By.Id("L2AGLb")).Click();
+            // _driver.SwitchTo().ActiveElement();
+            // _driver.FindElement(By.Id("L2AGLb")).Click();
             _driver.FindElement(By.Name("q")).SendKeys(keyword);
             _driver.FindElement(By.Name("q")).SendKeys(Keys.Enter);
         }
