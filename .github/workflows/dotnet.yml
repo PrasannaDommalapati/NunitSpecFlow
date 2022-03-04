@@ -42,5 +42,5 @@ jobs:
           
     - name: Test with dotnet
       continue-on-error: false
-      run: dotnet test --configuration Release -s ./.runsettings
+      run: dotnet test --configuration Release -s test.runsettings
       working-directory: SpecflowNunitTest/
