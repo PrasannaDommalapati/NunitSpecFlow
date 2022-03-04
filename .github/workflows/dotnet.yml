@@ -33,8 +33,14 @@ jobs:
           && sudo mv chromedriver /usr/local/bin/chromedriver \
           && sudo chmod +x /usr/local/bin/chromedriver \
           && chromedriver --version
+
+    - uses: cschleiden/replace-tokens@v1
+      with:
+        files: '["**/*.runsettings"]'
+      env:
+        URL: https://www.facebook.com
           
     - name: Test with dotnet
       continue-on-error: false
-      run: dotnet test --configuration Release
+      run: dotnet test --configuration Release -s ./.runsettings
       working-directory: SpecflowNunitTest/

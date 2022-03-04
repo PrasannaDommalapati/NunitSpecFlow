@@ -25,12 +25,14 @@ namespace SpecflowNunit.StepDefinitions
         private IWebDriver _driver { get; set; }
         private readonly ScenarioContext _scenarioContext;
         private readonly FeatureContext _featureContext;
+        public TestContext TestContext { get; set; }
 
-        public Hooks(IObjectContainer objectContainer, ScenarioContext context, FeatureContext featureContext)
+        public Hooks(IObjectContainer objectContainer, ScenarioContext context, FeatureContext featureContext, TestContext testContext)
         {
             _objectContainer = objectContainer;
             _scenarioContext = context;
             _featureContext = featureContext;
+            TestContext = testContext;
         }
 
         [BeforeTestRun]

@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
 using TechTalk.SpecFlow;
@@ -10,16 +11,19 @@ namespace SpecflowNunit.StepDefinitions
     {
         private readonly ScenarioContext _scenarioContext;
         private readonly IWebDriver _driver;
+        public TestContext TestContext { get; set; }
 
-        public GoogleDemoSteps(ScenarioContext scenarioContext, IWebDriver driver)
+        public GoogleDemoSteps(ScenarioContext scenarioContext, TestContext testContext,IWebDriver driver)
         {
             _scenarioContext = scenarioContext;
+            TestContext = testContext;
             _driver = driver;
         }
 
         [Given(@"I am in ""(.*)""")]
         public void GivenIAmIn(string url)
         {
+            url = TestContext.Parameters["url"].ToString();
             _driver.Navigate().GoToUrl(url);
         }
         
