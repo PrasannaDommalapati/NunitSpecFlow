@@ -6,6 +6,7 @@ using BoDi;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Edge;
 using System;
 using System.IO;
 using TechTalk.SpecFlow;
@@ -52,15 +53,15 @@ namespace SpecflowNunit.StepDefinitions
         [BeforeScenario]
         public void BeforeScenario()
         {
-            ChromeOptions option = new ChromeOptions();
+            EdgeOptions option = new EdgeOptions();
             option.AddArguments("start-maximized");
             option.AddArguments("--disable-gpu");
-            option.AddArguments("--headless");
+            //option.AddArguments("--headless");
 
-            new DriverManager().SetUpDriver(new ChromeConfig());
+            //new DriverManager().SetUpDriver(new EdgeConfig());
             Console.WriteLine("Setup");
 
-            _driver = new ChromeDriver(option);
+            _driver = new EdgeDriver(option);
             _objectContainer.RegisterInstanceAs<IWebDriver>(_driver);
             _scnarioName = _featureName.CreateNode<Scenario>(_scenarioContext.ScenarioInfo.Title);
             _scnarioName.AssignCategory(_scenarioContext.ScenarioInfo.Tags);
